@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class SimulationResponseDTO {
-    private String idSimulation;
+    private String groupSimulationId;
+    private String documentId;
     private String date;
     private String message;
 }

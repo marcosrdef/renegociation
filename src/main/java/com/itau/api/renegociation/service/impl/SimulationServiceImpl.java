@@ -14,16 +14,13 @@ import org.springframework.stereotype.Service;
 public class SimulationServiceImpl implements SimulationService {
 
     private final CustomerService customerService;
-    private final SimulationModelService simulationModelService;
     private final EventProducerService eventProducerService;
     private final SimulationFactoryImpl simulationFactoryImpl;
 
     public SimulationServiceImpl(final CustomerService customerService,
-                                    final SimulationModelService simulationModelService,
                                     final EventProducerService eventProducerService,
                                     final SimulationFactoryImpl simulationFactoryImpl) {
         this.customerService = customerService;
-        this.simulationModelService = simulationModelService;
         this.eventProducerService = eventProducerService;
         this.simulationFactoryImpl = simulationFactoryImpl;
     }
@@ -43,8 +40,7 @@ public class SimulationServiceImpl implements SimulationService {
     }
 
     private SimulationResponseDTO simulate(SimulationRequestDTO simulationRequest) {
-        return this.simulationFactoryImpl.convertSimulationModelToSimulationResponse(
-                this.simulationModelService.simulation(simulationRequest.getDocument()));
+        return this.simulationFactoryImpl.convertSimulationModelToSimulationResponse(simulationRequest);
     }
 
     private void sendEvent(SimulationResponseDTO simulationResponse) throws JsonProcessingException {

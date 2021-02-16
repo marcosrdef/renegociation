@@ -14,9 +14,10 @@ public class OffersCustomerFactoryImpl implements OffersCustomerFactory {
     public OffersCustomerResponseDTO convertOffersCustomerModelToOffersResponse(OffersCustomerModel offersCustomerModel) {
         return OffersCustomerResponseDTO
                 .builder()
-                .transactionId(offersCustomerModel.getId())
+                .groupOffersId(offersCustomerModel.getId())
                 .date(offersCustomerModel.getDate())
                 .message(Constants.MSG_PROCESSANDO)
+                .documentId(offersCustomerModel.getDocumentId())
                 .build();
     }
 

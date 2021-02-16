@@ -1,7 +1,6 @@
 # renegociation
 1 - caso não tenha o docker e o docker-compose instalado, será necessário instalar
-2 - após a instalação executar os comandos docker-compose -f docker-compose.dynamoDBlocal.yml -p dynamoDB up para subir o container do dynamoDB
-e depois executar o comando docker-compose -f docker-compose.kafka.yml -p kafka up para subir o container do kafka
+2 - após a instalação executar os comandos docker-compose -f docker-compose.yml -p renegociation up para subir o container do dynamoDB,do zookeeper e do kafka
 3 - clonar o projeto de renegociação e subir a aplicação local (quando subir ele, irá criar algumas tabelas e popular no dynamoDB)
 4 - clonar o projeto de efetivação de renegociação e subir a aplicação local
 5 - clonar o projeto de listagem de ofertas e subir a aplicação local

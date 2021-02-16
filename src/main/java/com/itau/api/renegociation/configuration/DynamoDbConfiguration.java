@@ -13,7 +13,6 @@ import com.amazonaws.services.dynamodbv2.util.TableUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itau.api.renegociation.model.CustomerModel;
-import com.itau.api.renegociation.model.DebtModel;
 import org.socialsignin.spring.data.dynamodb.repository.config.EnableDynamoDBRepositories;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -52,9 +51,6 @@ public class DynamoDbConfiguration {
         DynamoDBMapper dynamoDBMapper = new DynamoDBMapper(amazonDynamoDB);
 
         createTableCustomers(amazonDynamoDB, dynamoDBMapper);
-        createTableDebtModel(amazonDynamoDB, dynamoDBMapper);
-        createTableSimulation(amazonDynamoDB, dynamoDBMapper);
-        createTableRenegociation(amazonDynamoDB, dynamoDBMapper);
         createTableOffersCustomer(amazonDynamoDB, dynamoDBMapper);
 
         return amazonDynamoDB;
@@ -64,26 +60,6 @@ public class DynamoDbConfiguration {
     public AWSCredentials amazonAWSCredentials() {
         return new BasicAWSCredentials(
                 amazonKey, amazonSecret);
-    }
-
-    private void createTableRenegociation(AmazonDynamoDB amazonDynamoDB
-            ,DynamoDBMapper dynamoDBMapper) {
-        CreateTableRequest tableRequest = dynamoDBMapper
-                .generateCreateTableRequest(com.itau.api.renegociation.model.EffectiveRenegociationModel.class);
-        tableRequest.setProvisionedThroughput(
-                new ProvisionedThroughput(1L, 1L));
-        TableUtils.createTableIfNotExists(amazonDynamoDB, tableRequest);
-    }
-
-
-
-    private void createTableSimulation(AmazonDynamoDB amazonDynamoDB
-            ,DynamoDBMapper dynamoDBMapper) {
-        CreateTableRequest tableRequest = dynamoDBMapper
-                .generateCreateTableRequest(com.itau.api.renegociation.model.SimulationModel.class);
-        tableRequest.setProvisionedThroughput(
-                new ProvisionedThroughput(1L, 1L));
-        TableUtils.createTableIfNotExists(amazonDynamoDB, tableRequest);
     }
 
     private void createTableOffersCustomer(AmazonDynamoDB amazonDynamoDB
@@ -110,26 +86,8 @@ public class DynamoDbConfiguration {
                 dynamoDBMapper.batchSave(listCustomers);
             }
 
-
         }
     }
 
-    private void createTableDebtModel(AmazonDynamoDB amazonDynamoDB
-            ,DynamoDBMapper dynamoDBMapper) throws IOException {
-        CreateTableRequest tableRequest = dynamoDBMapper
-                .generateCreateTableRequest(DebtModel.class);
-        tableRequest.setProvisionedThroughput(
-                new ProvisionedThroughput(1L, 1L));
-        if(TableUtils.createTableIfNotExists(amazonDynamoDB, tableRequest)) {
-            ClassLoader classLoader = getClass().getClassLoader();
-            byte[] dataArr = FileCopyUtils.copyToByteArray(classLoader.getResourceAsStream("debts.json"));
-            String content = new String(dataArr, StandardCharsets.UTF_8);
-            List<DebtModel> listDebts= new ObjectMapper().readValue(content, new TypeReference<List<DebtModel>>(){});
-            if (!listDebts.isEmpty()) {
-                dynamoDBMapper.batchSave(listDebts);
-            }
-
-        }
-    }
 
 }

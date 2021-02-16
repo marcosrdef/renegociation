@@ -10,7 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class EffectiveResponseDTO {
-    private String idTransaction;
+    private String transactionId;
     private String date;
     private String message;
+    private String documentId;
+    private String simulationId;
+    private String groupSimulationId;
 }

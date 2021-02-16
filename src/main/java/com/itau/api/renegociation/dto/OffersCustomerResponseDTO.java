@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class OffersCustomerResponseDTO {
-    private String transactionId;
+    private String groupOffersId;
     private String date;
     private String message;
+    private String documentId;
 }

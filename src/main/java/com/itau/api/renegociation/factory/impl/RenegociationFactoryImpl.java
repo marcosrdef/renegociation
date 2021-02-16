@@ -3,9 +3,9 @@ package com.itau.api.renegociation.factory.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itau.api.renegociation.constant.Constants;
+import com.itau.api.renegociation.dto.EffectiveRequestDTO;
 import com.itau.api.renegociation.dto.EffectiveResponseDTO;
 import com.itau.api.renegociation.factory.RenegociationFactory;
-import com.itau.api.renegociation.model.EffectiveRenegociationModel;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -13,12 +13,15 @@ import java.util.Date;
 @Component
 public class RenegociationFactoryImpl implements RenegociationFactory {
     @Override
-    public EffectiveResponseDTO convertRenegociationModelToEffectiveResponse(EffectiveRenegociationModel effectiveRenegociationModel) {
+    public EffectiveResponseDTO convertRenegociationModelToEffectiveResponse(EffectiveRequestDTO effectiveRequest) {
         return EffectiveResponseDTO
                 .builder()
-                .idTransaction(effectiveRenegociationModel.getId())
+                .transactionId(java.util.UUID.randomUUID().toString())
                 .message(Constants.MSG_PROCESSANDO)
-                .date(effectiveRenegociationModel.getDate())
+                .date(new Date().toString())
+                .documentId(effectiveRequest.getDocument())
+                .simulationId(effectiveRequest.getSimulationId())
+                .groupSimulationId(effectiveRequest.getGroupSimulationId())
                 .build();
 
     }

@@ -13,4 +13,5 @@ public class EffectiveRequestDTO {
     @Pattern(regexp = "\\d+")
     private String document;
     private String simulationId;
+    private String groupSimulationId;
 }

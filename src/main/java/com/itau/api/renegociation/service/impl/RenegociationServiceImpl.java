@@ -8,7 +8,6 @@ import com.itau.api.renegociation.enums.TopicEnum;
 import com.itau.api.renegociation.exception.NotFoundException;
 import com.itau.api.renegociation.factory.impl.RenegociationFactoryImpl;
 import com.itau.api.renegociation.service.CustomerService;
-import com.itau.api.renegociation.service.EffectiveRenegociationModelService;
 import com.itau.api.renegociation.service.EventProducerService;
 import com.itau.api.renegociation.service.RenegociationService;
 import org.springframework.stereotype.Service;
@@ -17,16 +16,13 @@ import org.springframework.stereotype.Service;
 public class RenegociationServiceImpl implements RenegociationService {
 
     private final CustomerService customerService;
-    private final EffectiveRenegociationModelService effectiveRenegociationModelService;
     private final EventProducerService eventProducerService;
     private final RenegociationFactoryImpl renegociationFactoryImpl;
 
     public RenegociationServiceImpl(final CustomerService customerService,
-                                    final EffectiveRenegociationModelService effectiveRenegociationModelService,
                                     final EventProducerService eventProducerService,
                                     final RenegociationFactoryImpl renegociationFactoryImpl) {
         this.customerService = customerService;
-        this.effectiveRenegociationModelService = effectiveRenegociationModelService;
         this.eventProducerService = eventProducerService;
         this.renegociationFactoryImpl = renegociationFactoryImpl;
     }
@@ -46,7 +42,7 @@ public class RenegociationServiceImpl implements RenegociationService {
 
     private EffectiveResponseDTO effective(EffectiveRequestDTO effectiveRequest) {
         return this.renegociationFactoryImpl.convertRenegociationModelToEffectiveResponse(
-                this.effectiveRenegociationModelService.effective(effectiveRequest.getDocument()));
+                effectiveRequest);
     }
 
     private void sendEvent(EffectiveResponseDTO effectiveResponse) throws JsonProcessingException {
