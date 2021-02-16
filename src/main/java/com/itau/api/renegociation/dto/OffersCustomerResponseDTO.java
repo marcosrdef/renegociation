@@ -14,4 +14,5 @@ public class OffersCustomerResponseDTO {
     private String date;
     private String message;
     private String documentId;
+    private String customerType;
 }

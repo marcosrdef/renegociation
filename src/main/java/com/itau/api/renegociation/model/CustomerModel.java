@@ -19,6 +19,7 @@ public class CustomerModel {
     private String lastName;
     private String birthDay;
     private String enable;
+    private String typeDescription;
     private String type;
 
     @DynamoDBAttribute
@@ -28,6 +29,15 @@ public class CustomerModel {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @DynamoDBAttribute
+    public String getTypeDescription() {
+        return typeDescription;
+    }
+
+    public void setTypeDescription(String typeDescription) {
+        this.typeDescription = typeDescription;
     }
 
     public void setId(String id) {

@@ -5,19 +5,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itau.api.renegociation.constant.Constants;
 import com.itau.api.renegociation.dto.OffersCustomerResponseDTO;
 import com.itau.api.renegociation.factory.OffersCustomerFactory;
-import com.itau.api.renegociation.model.OffersCustomerModel;
+import com.itau.api.renegociation.model.CustomerModel;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service
 public class OffersCustomerFactoryImpl implements OffersCustomerFactory {
     @Override
-    public OffersCustomerResponseDTO convertOffersCustomerModelToOffersResponse(OffersCustomerModel offersCustomerModel) {
+    public OffersCustomerResponseDTO convertOffersCustomerModelToOffersResponse(CustomerModel customerModel) {
         return OffersCustomerResponseDTO
                 .builder()
-                .groupOffersId(offersCustomerModel.getId())
-                .date(offersCustomerModel.getDate())
+                .groupOffersId(java.util.UUID.randomUUID().toString())
+                .date(new Date().toString())
                 .message(Constants.MSG_PROCESSANDO)
-                .documentId(offersCustomerModel.getDocumentId())
+                .documentId(customerModel.getDocumentId())
+                .customerType(customerModel.getType())
                 .build();
     }
 

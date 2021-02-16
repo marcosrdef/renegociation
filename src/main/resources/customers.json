@@ -4,7 +4,8 @@
   "lastName": "Silva",
   "birthDay": "15/01/1976",
   "enable": "true",
-  "type": "GOLD"
+  "type": "2",
+  "typeDescription": "GOLD"
 },
   {
     "documentId": "09166650038",
@@ -12,7 +13,8 @@
     "lastName": "Silva",
     "birthDay": "25/12/1995",
     "enable": "true",
-    "type": "SILVER"
+    "type": "1",
+    "typeDescription": "SILVER"
   },
   {
     "documentId": "89852935089",
@@ -20,7 +22,8 @@
     "lastName": "Santos",
     "birthDay": "07/08/1985",
     "enable": "true",
-    "type": "PLATINUM"
+    "type": "3",
+    "typeDescription": "PLATINUM"
   },
   {
     "documentId": "66114431006",
@@ -28,7 +31,8 @@
     "lastName": "Pereira",
     "birthDay": "10/02/1998",
     "enable": "true",
-    "type": "BLACK"
+    "type": "4",
+    "typeDescription": "BLACK"
   },
   {
     "documentId": "60650165004",
@@ -36,7 +40,8 @@
     "lastName": "Pereira",
     "birthDay": "05/01/1978",
     "enable": "true",
-    "type": "GOLD"
+    "type": "2",
+    "typeDescription": "GOLD"
   },
   {
     "documentId": "12768334073",
@@ -44,6 +49,7 @@
     "lastName": "Fagundes",
     "birthDay": "25/04/1988",
     "enable": "true",
-    "type": "PLATINUM"
+    "type": "3",
+    "typeDescription": "PLATINUM"
   }
 ]

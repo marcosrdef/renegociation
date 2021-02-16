@@ -49,9 +49,7 @@ public class DynamoDbConfiguration {
                 .build();
 
         DynamoDBMapper dynamoDBMapper = new DynamoDBMapper(amazonDynamoDB);
-
         createTableCustomers(amazonDynamoDB, dynamoDBMapper);
-        createTableOffersCustomer(amazonDynamoDB, dynamoDBMapper);
 
         return amazonDynamoDB;
     }
@@ -60,15 +58,6 @@ public class DynamoDbConfiguration {
     public AWSCredentials amazonAWSCredentials() {
         return new BasicAWSCredentials(
                 amazonKey, amazonSecret);
-    }
-
-    private void createTableOffersCustomer(AmazonDynamoDB amazonDynamoDB
-            ,DynamoDBMapper dynamoDBMapper) {
-        CreateTableRequest tableRequest = dynamoDBMapper
-                .generateCreateTableRequest(com.itau.api.renegociation.model.OffersCustomerModel.class);
-        tableRequest.setProvisionedThroughput(
-                new ProvisionedThroughput(1L, 1L));
-        TableUtils.createTableIfNotExists(amazonDynamoDB, tableRequest);
     }
 
     private void createTableCustomers(AmazonDynamoDB amazonDynamoDB

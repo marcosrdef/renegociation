@@ -7,48 +7,47 @@ import com.itau.api.renegociation.dto.OffersCustomerResponseDTO;
 import com.itau.api.renegociation.enums.TopicEnum;
 import com.itau.api.renegociation.exception.NotFoundException;
 import com.itau.api.renegociation.factory.impl.OffersCustomerFactoryImpl;
+import com.itau.api.renegociation.model.CustomerModel;
 import com.itau.api.renegociation.service.CustomerService;
 import com.itau.api.renegociation.service.EventProducerService;
-import com.itau.api.renegociation.service.OffersCustomerModelService;
 import com.itau.api.renegociation.service.OffersCustomerService;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class OffersCustomerServiceImpl implements OffersCustomerService {
 
     private final CustomerService customerService;
-    private final OffersCustomerModelService offersCustomerModelService;
     private final EventProducerService eventProducerService;
     private final OffersCustomerFactoryImpl offersCustomerFactoryImpl;
 
     public OffersCustomerServiceImpl(final CustomerService customerService,
-                                 final OffersCustomerModelService offersCustomerModelService,
                                  final EventProducerService eventProducerService,
                                  final OffersCustomerFactoryImpl offersCustomerFactoryImpl) {
         this.customerService = customerService;
-        this.offersCustomerModelService = offersCustomerModelService;
         this.eventProducerService = eventProducerService;
         this.offersCustomerFactoryImpl = offersCustomerFactoryImpl;
     }
 
     @Override
     public OffersCustomerResponseDTO offers(OffersCustomerRequestDTO offersCustomerRequest) throws JsonProcessingException {
-        validateCustomer(offersCustomerRequest);
-        OffersCustomerResponseDTO offersCustomerResponse = getOffers(offersCustomerRequest);
+        OffersCustomerResponseDTO offersCustomerResponse = getOffers(validateCustomer(offersCustomerRequest));
         sendEvent(offersCustomerResponse);
         return offersCustomerResponse;
     }
 
 
-    private void validateCustomer(OffersCustomerRequestDTO offersCustomerRequest) {
-        if (this.customerService.findCustomer(offersCustomerRequest.getDocument()).isEmpty()) {
+    private CustomerModel validateCustomer(OffersCustomerRequestDTO offersCustomerRequest) {
+        Optional<CustomerModel> customer = this.customerService.findCustomer(offersCustomerRequest.getDocument());
+        if (customer.isEmpty()) {
             throw new NotFoundException(String.format(Constants.MSG_NOT_FOUND, offersCustomerRequest.getDocument()));
         }
+        return customer.get();
     }
 
-    private OffersCustomerResponseDTO getOffers(OffersCustomerRequestDTO offersCustomerRequest) {
-        return this.offersCustomerFactoryImpl.convertOffersCustomerModelToOffersResponse(
-                this.offersCustomerModelService.offers(offersCustomerRequest.getDocument()));
+    private OffersCustomerResponseDTO getOffers(CustomerModel customerModel) {
+        return this.offersCustomerFactoryImpl.convertOffersCustomerModelToOffersResponse(customerModel);
     }
 
     private void sendEvent(OffersCustomerResponseDTO offersCustomerResponse) throws JsonProcessingException {
