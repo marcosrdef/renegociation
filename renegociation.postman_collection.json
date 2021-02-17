@@ -1,0 +1,93 @@
+{
+	"info": {
+		"_postman_id": "c5c67e79-a78f-4415-8dcb-e5f6c3448e7e",
+		"name": "renegociation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "simulation request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"document\": \"{{trocar_por_cpf_client}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8092/simulation",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8092",
+					"path": [
+						"simulation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "renegociation request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"document\": \"{{trocar_por_cpf_cliente}}\",\r\n    \"simulationId\": \"{{trocar_por_id_de_simulacao_item_retornada_na_consulta_da_simulacao}}\",\r\n    \"groupSimulationId\": \"{{trocar_por_id_do_grupo_de_simulacao_retornada_na_solicitacao_da_simulacao}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8092/renegociation",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8092",
+					"path": [
+						"renegociation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "products request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"document\": \"{{trocar_por_cpf_cliente}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8092/offers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8092",
+					"path": [
+						"offers"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
