@@ -6,8 +6,10 @@ import com.itau.api.renegociation.dto.SimulationRequestDTO;
 import com.itau.api.renegociation.dto.SimulationResponseDTO;
 import com.itau.api.renegociation.enums.TopicEnum;
 import com.itau.api.renegociation.exception.NotFoundException;
-import com.itau.api.renegociation.factory.impl.SimulationFactoryImpl;
-import com.itau.api.renegociation.service.*;
+import com.itau.api.renegociation.factory.SimulationFactory;
+import com.itau.api.renegociation.service.CustomerService;
+import com.itau.api.renegociation.service.EventProducerService;
+import com.itau.api.renegociation.service.SimulationService;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,14 +17,14 @@ public class SimulationServiceImpl implements SimulationService {
 
     private final CustomerService customerService;
     private final EventProducerService eventProducerService;
-    private final SimulationFactoryImpl simulationFactoryImpl;
+    private final SimulationFactory simulationFactory;
 
     public SimulationServiceImpl(final CustomerService customerService,
                                     final EventProducerService eventProducerService,
-                                    final SimulationFactoryImpl simulationFactoryImpl) {
+                                    final SimulationFactory simulationFactory) {
         this.customerService = customerService;
         this.eventProducerService = eventProducerService;
-        this.simulationFactoryImpl = simulationFactoryImpl;
+        this.simulationFactory = simulationFactory;
     }
 
     @Override
@@ -40,12 +42,12 @@ public class SimulationServiceImpl implements SimulationService {
     }
 
     private SimulationResponseDTO simulate(SimulationRequestDTO simulationRequest) {
-        return this.simulationFactoryImpl.convertSimulationModelToSimulationResponse(simulationRequest);
+        return this.simulationFactory.convertSimulationModelToSimulationResponse(simulationRequest);
     }
 
     private void sendEvent(SimulationResponseDTO simulationResponse) throws JsonProcessingException {
         this.eventProducerService.send(
-                this.simulationFactoryImpl.convertSimulationResponseToString(simulationResponse)
+                this.simulationFactory.convertSimulationResponseToString(simulationResponse)
                 , TopicEnum.simulacaoRenegociacao);
     }
 }

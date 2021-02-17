@@ -1,7 +1,10 @@
 package com.itau.api.renegociation.mock;
 
+import com.itau.api.renegociation.constant.Constants;
 import com.itau.api.renegociation.dto.OffersCustomerRequestDTO;
 import com.itau.api.renegociation.dto.OffersCustomerResponseDTO;
+
+import java.util.Date;
 
 public class OffersCustomerMock {
     public static OffersCustomerRequestDTO getRequestOffersCustomerRequest() {
@@ -19,4 +22,6 @@ public class OffersCustomerMock {
                 .customerType("2")
                 .build();
     }
+
+
 }

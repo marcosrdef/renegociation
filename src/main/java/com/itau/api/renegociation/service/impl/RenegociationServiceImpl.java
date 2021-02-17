@@ -6,7 +6,7 @@ import com.itau.api.renegociation.dto.EffectiveRequestDTO;
 import com.itau.api.renegociation.dto.EffectiveResponseDTO;
 import com.itau.api.renegociation.enums.TopicEnum;
 import com.itau.api.renegociation.exception.NotFoundException;
-import com.itau.api.renegociation.factory.impl.RenegociationFactoryImpl;
+import com.itau.api.renegociation.factory.RenegociationFactory;
 import com.itau.api.renegociation.service.CustomerService;
 import com.itau.api.renegociation.service.EventProducerService;
 import com.itau.api.renegociation.service.RenegociationService;
@@ -17,14 +17,14 @@ public class RenegociationServiceImpl implements RenegociationService {
 
     private final CustomerService customerService;
     private final EventProducerService eventProducerService;
-    private final RenegociationFactoryImpl renegociationFactoryImpl;
+    private final RenegociationFactory renegociationFactory;
 
     public RenegociationServiceImpl(final CustomerService customerService,
                                     final EventProducerService eventProducerService,
-                                    final RenegociationFactoryImpl renegociationFactoryImpl) {
+                                    final RenegociationFactory renegociationFactory) {
         this.customerService = customerService;
         this.eventProducerService = eventProducerService;
-        this.renegociationFactoryImpl = renegociationFactoryImpl;
+        this.renegociationFactory = renegociationFactory;
     }
     @Override
     public EffectiveResponseDTO renegociation(EffectiveRequestDTO effectiveRequest) throws JsonProcessingException {
@@ -41,13 +41,13 @@ public class RenegociationServiceImpl implements RenegociationService {
     }
 
     private EffectiveResponseDTO effective(EffectiveRequestDTO effectiveRequest) {
-        return this.renegociationFactoryImpl.convertRenegociationModelToEffectiveResponse(
+        return this.renegociationFactory.convertRenegociationModelToEffectiveResponse(
                 effectiveRequest);
     }
 
     private void sendEvent(EffectiveResponseDTO effectiveResponse) throws JsonProcessingException {
         this.eventProducerService.send(
-                this.renegociationFactoryImpl.convertEffectiveResponseToString(effectiveResponse)
+                this.renegociationFactory.convertEffectiveResponseToString(effectiveResponse)
                 , TopicEnum.efetivarRenegociacao);
     }
 }

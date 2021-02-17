@@ -1,7 +1,6 @@
 package com.itau.api.renegociation.service;
 
 import com.itau.api.renegociation.mock.CustomerModelMock;
-import com.itau.api.renegociation.mock.SimulationMock;
 import com.itau.api.renegociation.model.CustomerModel;
 import com.itau.api.renegociation.repository.CustomerModelRepository;
 import com.itau.api.renegociation.service.impl.CustomerServiceImpl;

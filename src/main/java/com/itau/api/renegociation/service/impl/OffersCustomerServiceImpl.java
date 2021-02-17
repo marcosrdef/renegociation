@@ -6,6 +6,7 @@ import com.itau.api.renegociation.dto.OffersCustomerRequestDTO;
 import com.itau.api.renegociation.dto.OffersCustomerResponseDTO;
 import com.itau.api.renegociation.enums.TopicEnum;
 import com.itau.api.renegociation.exception.NotFoundException;
+import com.itau.api.renegociation.factory.OffersCustomerFactory;
 import com.itau.api.renegociation.factory.impl.OffersCustomerFactoryImpl;
 import com.itau.api.renegociation.model.CustomerModel;
 import com.itau.api.renegociation.service.CustomerService;
@@ -20,14 +21,14 @@ public class OffersCustomerServiceImpl implements OffersCustomerService {
 
     private final CustomerService customerService;
     private final EventProducerService eventProducerService;
-    private final OffersCustomerFactoryImpl offersCustomerFactoryImpl;
+    private final OffersCustomerFactory offersCustomerFactory;
 
     public OffersCustomerServiceImpl(final CustomerService customerService,
                                  final EventProducerService eventProducerService,
-                                 final OffersCustomerFactoryImpl offersCustomerFactoryImpl) {
+                                 final OffersCustomerFactory offersCustomerFactory) {
         this.customerService = customerService;
         this.eventProducerService = eventProducerService;
-        this.offersCustomerFactoryImpl = offersCustomerFactoryImpl;
+        this.offersCustomerFactory = offersCustomerFactory;
     }
 
     @Override
@@ -47,12 +48,12 @@ public class OffersCustomerServiceImpl implements OffersCustomerService {
     }
 
     private OffersCustomerResponseDTO getOffers(CustomerModel customerModel) {
-        return this.offersCustomerFactoryImpl.convertOffersCustomerModelToOffersResponse(customerModel);
+        return this.offersCustomerFactory.convertOffersCustomerModelToOffersResponse(customerModel);
     }
 
     private void sendEvent(OffersCustomerResponseDTO offersCustomerResponse) throws JsonProcessingException {
         this.eventProducerService.send(
-                this.offersCustomerFactoryImpl.convertOffersCustomerModelToString(offersCustomerResponse)
+                this.offersCustomerFactory.convertOffersCustomerModelToString(offersCustomerResponse)
                 , TopicEnum.listarProdutos);
     }
 }
