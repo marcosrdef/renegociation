@@ -1,0 +1,226 @@
+openapi: 3.0.0
+info:
+  description: api responsável por fazer a solicitação de simulação de renegociação, de efetivação de renegociação e solicitação de ofertas para o cliente
+  title: API Renegociation
+  version: 1;2021-02-18
+  contact:
+    email: marcosrdef@gmail.com
+servers:
+  - url: 'http://localhost:8092'
+tags:
+  - name: renegociation
+    description: customer renegociation
+paths:
+  /simulation:
+    post:
+      operationId: simulation
+      summary: 'solicita a simulação de renegociação'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimulationRequestDTO'
+        required: true
+      tags:
+        - renegociation
+      responses:
+        '200':
+          description: retorna o id do grupo que será utilizado posteriormente para gerar a simulação, gerar a efetivação e consultar a simulação da renegociação.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimulationResponseDTO'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /renegociation:
+    post:
+      operationId: renegociation
+      summary: 'solicita a renegociação'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EffectiveRequestDTO'
+        required: true
+      tags:
+        - renegociation
+      responses:
+        '200':
+          description: retorna o id da transação da renegociação que pode ser utilizado para consulta da renegociação na api de efetivação de renegociação (effectiveRenegociation)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EffectiveResponseDTO'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /offers:
+    post:
+      operationId: offers
+      summary: 'solicita a simulação de ofertas'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OffersCustomerRequestDTO'
+        required: true
+      tags:
+        - renegociation
+      responses:
+        '200':
+          description: retorna o id do grupo de ofertas que será utilizado posteriormente consultar as ofertas geradas para o cliente no microserviço de ofertas (offers).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OffersCustomerResponseDTO'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+
+
+components:
+  schemas:
+    SimulationRequestDTO:
+      type: object
+      properties:
+        document:
+          type: string
+          description: cpf do cliente (somente números)
+          example: '89852935089'
+          pattern: ^\d+$
+    EffectiveRequestDTO:
+      type: object
+      properties:
+        document:
+          type: string
+          description: cpf do cliente (somente números)
+          example: '89852935089'
+          pattern: ^\d+$
+        simulationId:
+          type: string
+          description: id do item da simulação gerado no serviço de efetivação de simulação no microserviço de efetivação de renegociação
+          example: '31763879-97d7-4160-a172-667beaa376fa'
+        groupSimulationId:
+          type: string
+          description: id do grupo da simulação, gerado a partir da solicitação de simulação no microserviço de renegociação (o mesmo que estamos executando nesse outro endpoint)
+          example: '22b9bc27-e6ed-4466-848e-3e8a788b2ab2'
+    OffersCustomerRequestDTO:
+      type: object
+      properties:
+        document:
+          type: string
+          description: cpf do cliente (somente números)
+          example: '89852935089'
+          pattern: ^\d+$
+    SimulationResponseDTO:
+      type: object
+      properties:
+        groupSimulationId:
+          type: string
+          description: id do grupo de simulação
+          example: '850c9566-8190-4152-a286-361e4a05e27f'
+        documentId:
+          type: string
+          description: cpf do cliente
+          example: '89852935089'
+        date:
+          type: string
+          description: data da solicitação
+          example: 'Wed Feb 17 12:43:55 BRT 2021'
+        message:
+          type: string
+          description: mensagem de retorno
+          example: 'Processando solicitação'
+    EffectiveResponseDTO:
+      type: object
+      properties:
+        transactionId:
+          type: string
+          description: id da transação da renegociação
+          example: '39894e9e-5482-4cab-8e14-1fc8ec812d72'
+        date:
+          type: string
+          description: data da solicitação
+          example: 'Processando solicitação'
+        message:
+          type: string
+          description: mensagem de retorno
+          example: 'Wed Feb 17 12:43:55 BRT 2021'
+        documentId:
+          type: string
+          description: cpf do cliente
+          example: '89852935089'
+        simulationId:
+          type: string
+          description: id do item escolhido da simulação
+          example: '31763879-97d7-4160-a172-667beaa376fa'
+        groupSimulationId:
+          type: string
+          description: id do grupo da simulação
+          example: '22b9bc27-e6ed-4466-848e-3e8a788b2ab2'
+    OffersCustomerResponseDTO:
+      type: object
+      properties:
+        groupOffersId:
+          type: string
+          description: id do grupo de ofertas
+          example: 'c50a6a0f-51bf-4d97-a789-2ea07383f666'
+        date:
+          type: string
+          description: data da solicitação
+          example: 'Wed Feb 17 13:40:12 BRT 2021'
+        message:
+          type: string
+          description: mensagem de retorno
+          example: 'Processando solicitação'
+        documentId:
+          type: string
+          description: cpf do cliente
+          example: '89852935089'
+        customerType:
+          type: string
+          description: typo do cliente
+          example: '3'
+    ErrorDTO:
+      type: object
+      properties:
+        message:
+          type: string
+          description: mensagem do erro
+          example: 'Not Found'
+        statusCode:
+          type: string
+          description: código do erro
+          example: '404'
+        description:
+          type: string
+          description: descrição do erro
+          example: 'Not Found Customer'
